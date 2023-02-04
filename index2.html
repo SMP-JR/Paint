@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      #canvas {
+        border: 1px solid black;
+      }
+      #controls {
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <div id="controls">
+      <label for="brush-color">Brush Color:</label>
+      <input type="color" id="brush-color" value="#000000">
+      <br><br>
+      <label for="brush-size">Brush Size:</label>
+      <input type="number" id="brush-size" value="1" min="1" max="100">
+      <br><br>
+      <label for="fill-color">Fill Color:</label>
+      <input type="color" id="fill-color" value="#ffffff">
+      <br><br>
+      <button id="clear-button">Clear Canvas</button>
+      <br><br>
+      <button id="fill-button">Fill</button>
+    </div>
+    <script>
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      var painting = false;
+      var brushColor = document.getElementById("brush-color").value;
+      var brushSize = document.getElementById("brush-size").value;
+      var fillColor = document.getElementById("fill-color").value;
+      
+      document.getElementById("brush-color").addEventListener("input", function(event) {
+        brushColor = event.target.value;
+      });
+      
+      document.getElementById("brush-size").addEventListener("input", function(event) {
+        brushSize = event.target.value;
+      });
+      
+      document.getElementById("fill-color").addEventListener("input", function(event) {
+        fillColor = event.target.value;
+      });
+      
+      document.getElementById("clear-button").addEventListener("click", function(event) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      });
+      
+      document.getElementById("fill-button").addEventListener("click", function(event) {
+        ctx.fillStyle = fillColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      });
+      
+      canvas.addEventListener("mousedown", function(event) {
+        painting = true;
+        ctx.beginPath();
+        ctx.moveTo(event.clientX, event.clientY);
+        ctx.strokeStyle = brushColor;
+        ctx.lineWidth = brushSize;
+      });
+      
+      canvas.addEventListener("mousemove", function(event) {
+        if (painting) {ctx.lineTo(event.clientX, event.clientY);
+ctx.stroke();
+}
+});
+          canvas.addEventListener("mouseup", function(event) {
+    painting = false;
+  });
+    </script>
+  </body>
+</html>
